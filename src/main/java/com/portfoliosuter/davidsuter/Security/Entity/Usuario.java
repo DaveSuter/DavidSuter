@@ -36,7 +36,7 @@ public class Usuario {
     @Column(unique = true)
     private String userName;
     @NotNull
-    private String mail;
+    private String email;
     @NotNull
     private String password;
     @ManyToMany(fetch = FetchType.EAGER) 
@@ -46,10 +46,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String name, String userName, String mail, String passwprd) {
+    public Usuario(String name, String userName, String email, String password) {
         this.name = name;
         this.userName = userName;
-        this.mail = mail;
+        this.email = email;
         this.password = password;
     }
     

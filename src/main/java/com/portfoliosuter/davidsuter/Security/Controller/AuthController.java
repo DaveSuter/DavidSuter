@@ -59,7 +59,7 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("Error al completar o mail invalido"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existByUserName(nuevoUsuario.getUserName()))
             return new ResponseEntity(new Mensaje("El nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
-        if(usuarioService.existByMail(nuevoUsuario.getMail()))
+        if(usuarioService.existByEmail(nuevoUsuario.getMail()))
             return new ResponseEntity(new Mensaje("El mail ya esta registrado"), HttpStatus.BAD_REQUEST);
         
         Usuario usuario = new Usuario(nuevoUsuario.getName(), nuevoUsuario.getUserName(), nuevoUsuario.getMail(), passwordEncoder.encode(nuevoUsuario.getPassword()));
