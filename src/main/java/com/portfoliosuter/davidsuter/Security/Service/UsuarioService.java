@@ -26,8 +26,8 @@ public class UsuarioService {
         return iusuarioRepository.findByUserName(userName);
     }
     
-    public boolean existByUserName(String userName){
-        return iusuarioRepository.existByUserName(userName);
+    public boolean existsByUserName(String userName){
+        return iusuarioRepository.existsByUserName(userName);
     }
     public boolean existByMail(String mail){
         return iusuarioRepository.existByEmail(mail);

@@ -4,6 +4,7 @@ import com.portfoliosuter.davidsuter.Entity.Skill;
 import com.portfoliosuter.davidsuter.Interface.ISkillService;
 import com.portfoliosuter.davidsuter.Repository.ISkillRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
  * @author davey
  */
 @Service
+@Transactional
 public class ImpSkillService implements ISkillService {
     @Autowired ISkillRepository iSkillRepository;
 
@@ -39,4 +41,7 @@ public class ImpSkillService implements ISkillService {
         return skill;
     }
     
+    public boolean existsById(Long id){
+        return iSkillRepository.existsById(id);
+    }
 }

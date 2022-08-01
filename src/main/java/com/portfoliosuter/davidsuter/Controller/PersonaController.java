@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author davey
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class PersonaController {
     @Autowired IPersonaService iPersonaService;
     

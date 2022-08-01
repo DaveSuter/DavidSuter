@@ -16,8 +16,9 @@ import org.springframework.stereotype.Service;
  *
  * @author davey
  */
+
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsImpl implements UserDetailsService{
     @Autowired
     UsuarioService usuarioService;
 
@@ -26,5 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Usuario usuario = usuarioService.getByUserName(userName).get();
         return UsuarioPrincipal.build(usuario);
     }
+    
     
 }

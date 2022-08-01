@@ -1,15 +1,22 @@
 package com.portfoliosuter.davidsuter.Controller;
 
+import com.portfoliosuter.davidsuter.Dto.dtoEducacion;
 import com.portfoliosuter.davidsuter.Entity.Educacion;
-import com.portfoliosuter.davidsuter.Interface.IEducacionService;
+import com.portfoliosuter.davidsuter.Security.Controller.Mensaje;
+import com.portfoliosuter.davidsuter.Service.ImpEducacionService;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,40 +25,47 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
+@RequestMapping("educacion")
+@CrossOrigin
 public class EducacionController {
-    @Autowired IEducacionService iEducacionService;
+    @Autowired
+    ImpEducacionService impEducacionService;
     
-    @GetMapping("/educacion/traer")
-    public Educacion getEducacion(@RequestBody Educacion educacion){
-        return iEducacionService.findEducacion((long)1);
+    @GetMapping("/list")
+    public ResponseEntity<List<Educacion>> list(){
+        List<Educacion> list = impEducacionService.getEducacion();
+        return new ResponseEntity(list, HttpStatus.OK);
     }
     
-    @PostMapping("/educacion/crear")
-    public String createEducacion(@RequestBody Educacion educacion){
-        iEducacionService.saveEducacion(educacion);
-        return "La educacion se guardo correctamente";
+    @PostMapping("/create")
+    public ResponseEntity<?> createEducacion(@RequestBody dtoEducacion dtoedu){
+        if(StringUtils.isBlank(dtoedu.getTitulo()))
+            return new ResponseEntity(new Mensaje("El campo titulo es obligatorio"), HttpStatus.BAD_REQUEST);
+        Educacion educacion = new Educacion(dtoedu.getTitulo(), dtoedu.getInstitucion(), 
+                dtoedu.getNivel(), dtoedu.getFechaInicio(), dtoedu.getFechaFinalizacion());
+        impEducacionService.saveEducacion(educacion);
+        return new ResponseEntity(new Mensaje("Educacion agregada con exito"), HttpStatus.OK);
     }
     
-    @DeleteMapping("/educacion/borrar/{id}")
-    public String deleteEducacion(@PathVariable Long id){
-        iEducacionService.deleteEducacion(id);
-        return "La educacion se elimino correctamente";
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody dtoEducacion dtoedu){
+        if(!impEducacionService.existsById(id))
+            return new ResponseEntity(new Mensaje("La educacion no existe"), HttpStatus.BAD_REQUEST);
+        Educacion educacion = impEducacionService.findEducacion(id);
+        educacion.setTitulo(dtoedu.getTitulo());
+        educacion.setInstitucion(dtoedu.getInstitucion());
+        educacion.setNivel(dtoedu.getNivel());
+        educacion.setFechaInicio(dtoedu.getFechaInicio());
+        educacion.setFechaFinalizacion(dtoedu.getFechaFinalizacion());
+        impEducacionService.saveEducacion(educacion);
+        return new ResponseEntity(new Mensaje("Educacion actualizada con exito"), HttpStatus.OK);
     }
     
-    @PutMapping("/educacion/editar/{id}")
-    public Educacion editEducacion(@PathVariable Long id, @RequestParam("titulo") String newTitulo, 
-            @RequestParam("institucion") String newInstitucion, 
-            @RequestParam("nivel") String newNivel, 
-            @RequestParam("fechaInicio") String newFechaInicio, 
-            @RequestParam("fechaFinalizacion") String newFechaFinalizacion){
-        Educacion educacion = iEducacionService.findEducacion(id);
-        
-        educacion.setTitulo(newTitulo);
-        educacion.setInstitucion(newInstitucion);
-        educacion.setNivel(newNivel);
-        educacion.setFechaInicio(newFechaInicio);
-        educacion.setFechaFinalizacion(newFechaFinalizacion);
-        iEducacionService.saveEducacion(educacion);
-        return educacion;
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id){
+        if(!impEducacionService.existsById(id))
+            return new ResponseEntity(new Mensaje("La educacion no existe"), HttpStatus.BAD_REQUEST);
+        impEducacionService.deleteEducacion(id);
+        return new ResponseEntity(new Mensaje("Educacion eliminada con exito"), HttpStatus.OK);
     }
 }

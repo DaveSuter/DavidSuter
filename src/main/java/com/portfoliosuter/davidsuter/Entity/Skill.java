@@ -28,5 +28,13 @@ public class Skill {
     @NotNull
     @Size(min= 1, max = 3, message = "debe tener entre 1 y 3 caracteres")
     private int porcentaje;
-    
+
+    public Skill() {
+    }
+
+    public Skill(String habilidad, int porcentaje) {
+        this.habilidad = habilidad;
+        this.porcentaje = porcentaje;
+    }
+  
 }

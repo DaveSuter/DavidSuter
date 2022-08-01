@@ -40,5 +40,17 @@ public class Experiencia {
     @NotNull
     @Size(min= 1, max = 500, message = "debe tener entre 1 y 500 caracteres")
     private String descripcion;
+
+    public Experiencia() {
+    }
+
+    public Experiencia(String puesto, String empresa, String fechaInicio, String fechaFinalizacion, String descripcion) {
+        this.puesto = puesto;
+        this.empresa = empresa;
+        this.fechaInicio = fechaInicio;
+        this.fechaFinalizacion = fechaFinalizacion;
+        this.descripcion = descripcion;
+    }
+    
     
 }

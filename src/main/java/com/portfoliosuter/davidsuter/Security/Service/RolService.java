@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
  *
  * @author davey
  */
-
 @Service
 @Transactional
 public class RolService {
@@ -26,6 +25,7 @@ public class RolService {
     public Optional<Rol> getByRolNombre(RolNombre rolNombre){
         return irolRepository.findByRolNombre(rolNombre);
     }
+    
     public void save(Rol rol){
         irolRepository.save(rol);
     }

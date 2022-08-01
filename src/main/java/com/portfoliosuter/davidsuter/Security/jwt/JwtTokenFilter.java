@@ -4,7 +4,7 @@
  */
 package com.portfoliosuter.davidsuter.Security.jwt;
 
-import com.portfoliosuter.davidsuter.Security.Service.UserDetailsServiceImpl;
+import com.portfoliosuter.davidsuter.Security.Service.UserDetailsImpl;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,26 +22,29 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *
  * @author davey
  */
+
 public class JwtTokenFilter extends OncePerRequestFilter {
+
     private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
-    
+
     @Autowired
     JwtProvider jwtProvider;
     @Autowired
-    UserDetailsServiceImpl userDetailsServiceImpl;
+    UserDetailsImpl userDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             String token = getToken(request);
-            if(token != null && jwtProvider.validateToken(token)){
-                String userName = jwtProvider.getUserNameFromToken(token);
-                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userName);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            if (token != null && jwtProvider.validateToken(token)) {
+                String nombreUsuario = jwtProvider.getNombreUSuarioFromToken(token);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(nombreUsuario);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        }catch(Exception e){
-            logger.error("Fallo el metodo doFilterInternal");
+        } catch (Exception e) {
+            logger.error("Fallí el metodo doFilterInternal");
         }
         filterChain.doFilter(request, response);
     }

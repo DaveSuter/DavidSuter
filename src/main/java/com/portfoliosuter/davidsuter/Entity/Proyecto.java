@@ -28,4 +28,14 @@ public class Proyecto {
     @NotNull
     @Size(min= 1, max = 500, message = "debe tener entre 1 y 500 caracteres")
     private String descripcion;
+
+    public Proyecto() {
+    }
+
+    public Proyecto(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+    
+    
 }

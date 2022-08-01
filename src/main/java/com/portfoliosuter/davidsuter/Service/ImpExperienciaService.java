@@ -4,6 +4,7 @@ import com.portfoliosuter.davidsuter.Entity.Experiencia;
 import com.portfoliosuter.davidsuter.Interface.IExperienciaService;
 import com.portfoliosuter.davidsuter.Repository.IExperienciaRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Service;
  * @author davey
  */
 @Service
+@Transactional
 public class ImpExperienciaService implements IExperienciaService {
-    @Autowired IExperienciaRepository iExperienciaRepository;
+    @Autowired 
+    IExperienciaRepository iExperienciaRepository;
 
     @Override
     public List<Experiencia> getExperiencia() {
@@ -36,5 +39,11 @@ public class ImpExperienciaService implements IExperienciaService {
         Experiencia experiencia = iExperienciaRepository.findById(id).orElse(null);
         return experiencia;
     }
+    
+    public boolean existsById(Long id){
+        return iExperienciaRepository.existsById(id);
+    }
+    
+    
     
 }

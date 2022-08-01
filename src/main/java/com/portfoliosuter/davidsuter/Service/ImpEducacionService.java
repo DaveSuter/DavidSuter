@@ -4,6 +4,7 @@ import com.portfoliosuter.davidsuter.Entity.Educacion;
 import com.portfoliosuter.davidsuter.Interface.IEducacionService;
 import com.portfoliosuter.davidsuter.Repository.IEducacionRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Service;
  * @author davey
  */
 @Service
+@Transactional
 public class ImpEducacionService implements IEducacionService {
-    @Autowired IEducacionRepository iEducacionRepository;
+    @Autowired 
+    IEducacionRepository iEducacionRepository;
 
     @Override
     public List<Educacion> getEducacion() {
@@ -37,4 +40,7 @@ public class ImpEducacionService implements IEducacionService {
         return educacion;
     }
     
+    public boolean existsById(Long id){
+        return iEducacionRepository.existsById(id);
+    }
 }

@@ -17,8 +17,8 @@ import lombok.Setter;
 @Getter @Setter
 public class NuevoUsuario {
     private String name;
-    private String mail;
     private String userName;
+    private String mail;
     private String password;
     private Set<String> roles = new HashSet<>();
 }

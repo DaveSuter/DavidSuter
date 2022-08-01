@@ -11,6 +11,7 @@ import lombok.Setter;
  *
  * @author davey
  */
+
 @Getter @Setter
 public class Mensaje {
     private String mensaje;

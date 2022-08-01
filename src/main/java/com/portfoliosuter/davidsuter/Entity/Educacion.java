@@ -41,4 +41,17 @@ public class Educacion {
     @Size(min= 1, max = 10, message = "debe tener entre 1 y 10 caracteres")
     private String fechaFinalizacion; 
 
+    public Educacion() {
+    }
+
+    public Educacion(String titulo, String institucion, String nivel, String fechaInicio, String fechaFinalizacion) {
+        this.titulo = titulo;
+        this.institucion = institucion;
+        this.nivel = nivel;
+        this.fechaInicio = fechaInicio;
+        this.fechaFinalizacion = fechaFinalizacion;
+    }
+    
+    
+
 }

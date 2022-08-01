@@ -4,6 +4,7 @@ import com.portfoliosuter.davidsuter.Entity.Proyecto;
 import com.portfoliosuter.davidsuter.Interface.IProyectoService;
 import com.portfoliosuter.davidsuter.Repository.IProyectoRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  * @author davey
  */
 @Service
+@Transactional
 public class ImpProyectoService implements IProyectoService {
     @Autowired IProyectoRepository iProyectoRepository;
 
@@ -37,4 +39,7 @@ public class ImpProyectoService implements IProyectoService {
         return proyecto;
     }
     
+    public boolean existsById(Long id){
+        return iProyectoRepository.existsById(id);
+    }
 }

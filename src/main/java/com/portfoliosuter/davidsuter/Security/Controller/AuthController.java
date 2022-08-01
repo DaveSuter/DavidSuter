@@ -4,7 +4,7 @@
  */
 package com.portfoliosuter.davidsuter.Security.Controller;
 
-import com.portfoliosuter.davidsuter.Security.Dto.JwtDTO;
+import com.portfoliosuter.davidsuter.Security.Dto.JwtDto;
 import com.portfoliosuter.davidsuter.Security.Dto.LoginUsuario;
 import com.portfoliosuter.davidsuter.Security.Dto.NuevoUsuario;
 import com.portfoliosuter.davidsuter.Security.Entity.Rol;
@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
-    @Autowired
+    
     PasswordEncoder passwordEncoder;
     @Autowired
     AuthenticationManager authenticationManager;
@@ -57,7 +58,7 @@ public class AuthController {
     public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Error al completar o mail invalido"), HttpStatus.BAD_REQUEST);
-        if(usuarioService.existByUserName(nuevoUsuario.getUserName()))
+        if(usuarioService.existsByUserName(nuevoUsuario.getUserName()))
             return new ResponseEntity(new Mensaje("El nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existByMail(nuevoUsuario.getMail()))
             return new ResponseEntity(new Mensaje("El mail ya esta registrado"), HttpStatus.BAD_REQUEST);
@@ -74,14 +75,14 @@ public class AuthController {
     
     //login
     @PostMapping("/login")
-    public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
+    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos completados incorrectamente"), HttpStatus.BAD_REQUEST);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getUserName(), loginUsuario.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        JwtDTO jwtDto = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+        JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
 }
